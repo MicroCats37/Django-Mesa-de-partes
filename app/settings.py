@@ -37,8 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'mesa_de_partes',
-    'login'
+    'usuarios',
     'expedientes',
     'solicitudes',
     'rest_framework',
@@ -183,7 +182,7 @@ SIMPLE_JWT = {
     "ALGORITHM": "HS256",
     "SIGNING_KEY": SECRET_KEY,
     "AUTH_HEADER_TYPES": ("Bearer",),
-    "TOKEN_OBTAIN_SERIALIZER": "mesa_de_partes.serializers.LoginSerializer"
+    "TOKEN_OBTAIN_SERIALIZER": "usuarios.serializers.LoginSerializer"
 }
 
 MEDIA_URL = "/media/"
