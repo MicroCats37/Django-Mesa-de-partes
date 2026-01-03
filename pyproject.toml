@@ -1,0 +1,18 @@
+[tool.ruff]
+select = [
+    "E",   # Errores de pycodestyle
+    "F",   # Errores de pyflakes (variables no usadas, imports)
+    "I",   # Orden de imports (isort)
+    "DJ",  # Reglas específicas de Django
+    "DRF", # Reglas específicas de Django REST Framework
+]
+ignore = [
+    "E501", # Desactivar límite de longitud de línea si molesta
+]
+exclude = [
+    "migrations",
+    ".venv",
+]
+
+line-length = 100
+target-version = "py311"

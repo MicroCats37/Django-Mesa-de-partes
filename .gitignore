@@ -1,0 +1,31 @@
+# --- Python General ---
+__pycache__/
+*.py[cod]
+*$py.class
+
+# --- Entornos Virtuales (Virtual Environments) ---
+# Importante: Esto ignorará tu carpeta 'venv' actual
+venv/
+env/
+.env
+.venv/
+
+# --- Django ---
+*.log
+local_settings.py
+db.sqlite3
+db.sqlite3-journal
+media/
+staticfiles/
+
+# --- Variables de Entorno (Seguridad) ---
+.env
+.env.local
+
+# --- IDEs / Editores de Texto ---
+.vscode/
+.idea/
+
+# --- Sistema Operativo ---
+.DS_Store
+Thumbs.db

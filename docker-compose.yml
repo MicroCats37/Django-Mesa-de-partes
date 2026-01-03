@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  mesa_de_partes:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    # Asumimos que tu aplicación ahora escucha en el puerto 8000 dentro del contenedor
+    ports:
+      - "5001:8000" 
+    restart: unless-stopped
+    
+    # 🚨 CAMBIO AQUÍ: Usamos un Montaje de Enlace
+    volumes:
+      # La ruta relativa './sqlite_data' apunta a una carpeta en tu máquina host.
+      - ./sqlite_data:/app/data/ 
+      
+    # Si quieres también montar el código fuente para desarrollo:
+    # - .:/app

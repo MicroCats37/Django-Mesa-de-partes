@@ -1,0 +1,46 @@
+#!/bin/sh
+set -e
+
+# ----------------------
+# Variables de entorno necesarias para Django
+# ----------------------
+export PYTHONPATH=/app
+# Asegúrate de que 'app.settings' sea la ruta correcta a tu settings.py
+export DJANGO_SETTINGS_MODULE=app.settings 
+
+# ----------------------
+# 1. Generar y Aplicar Migraciones (Ideal para Dev con SQLite)
+# ----------------------
+echo "[ENTRYPOINT] Detectando cambios en modelos (makemigrations)..."
+python manage.py makemigrations
+
+echo "[ENTRYPOINT] Aplicando migraciones a la base de datos (migrate)..."
+python manage.py migrate
+
+# ----------------------
+# 2. Crear superusuario por defecto si no existe
+# ----------------------
+echo "[ENTRYPOINT] Verificando superusuario 'admin'..."
+echo "from django.contrib.auth import get_user_model; \
+User = get_user_model(); \
+User.objects.filter(username='admin').exists() or User.objects.create_superuser('admin','admin@example.com','admin')" | python manage.py shell
+
+# ----------------------
+# 3. Scripts iniciales (Roles, Usuarios de prueba, etc.)
+# ----------------------
+echo "[ENTRYPOINT] Ejecutando script de usuarios y roles..."
+python manage.py script_user_rol || echo "⚠️ Advertencia: El script de roles falló o ya existen los datos."
+
+# ----------------------
+# 4. 🚀 INICIAR SERVIDOR 🚀
+# ----------------------
+
+# --- MODO DESARROLLO (RUNSERVER) ---
+# Úsalo ahora para ver errores en consola y tener auto-reload.
+echo "[ENTRYPOINT] Iniciando servidor de desarrollo (runserver)..."
+python manage.py runserver 0.0.0.0:8000
+
+# --- MODO PRODUCCIÓN (GUNICORN) ---
+# Cuando termines de desarrollar, comenta las 2 líneas de arriba y descomenta estas:
+# echo "[ENTRYPOINT] Iniciando servidor Gunicorn..."
+# exec gunicorn app.wsgi:application --bind 0.0.0.0:8000 --workers 4
